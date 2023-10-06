@@ -10,4 +10,3 @@ export enum TokenTypes {
   ResetPasswordToken,
   VerifyEmailToken
 }
-

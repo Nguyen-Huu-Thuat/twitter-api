@@ -1,8 +1,10 @@
 import { Collection, Db, MongoClient } from 'mongodb'
 import { config } from 'dotenv'
 import User from '~/models/schemas/User.schema'
+import RefreshToken from '~/models/schemas/RefreshToken.schema'
 config()
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.4fmzets.mongodb.net/?retryWrites=true&w=majority`
+// const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.4fmzets.mongodb.net/?retryWrites=true&w=majority`
+const uri = `mongodb://127.0.0.1:27017`
 
 class DatabaseService {
   private client: MongoClient
@@ -23,6 +25,10 @@ class DatabaseService {
 
   get users(): Collection<User> {
     return this.db.collection(process.env.DB_USER_COLLECTION as string)
+  }
+
+  get refreshTokens(): Collection<RefreshToken> {
+    return this.db.collection(process.env.DB_REFRESH_TOKEN_COLLECTION as string)
   }
 }
 
