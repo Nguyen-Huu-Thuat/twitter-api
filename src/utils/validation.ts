@@ -17,7 +17,7 @@ export const validate = (validation: RunnableValidationChains<ValidationChain>) 
     }
     const errorsObj = errors.mapped()
     const entityError = new EntityError({ errors: {} })
-    console.log(errorsObj)
+    // console.log(errorsObj)
     for (const key in errorsObj) {
       const { msg } = errorsObj[key]
       // Tra ve loi không phải là lỗi do validate

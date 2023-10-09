@@ -1,11 +1,24 @@
 import { error } from 'console'
 import { Router } from 'express'
-import { loginController, logoutController, registerController } from '~/controllers/users.controllers'
+import {
+  emailVerifyController,
+  forgotPasswordController,
+  loginController,
+  logoutController,
+  registerController,
+  resendemailVerifyController,
+  resetPasswordController,
+  verifyForgotPasswordController
+} from '~/controllers/users.controllers'
 import {
   accessTokenValidator,
+  emailVerifyTokenValidator,
+  forgotPasswordValidator,
   loginValidator,
   refreshTokenValidator,
-  registerValidator
+  registerValidator,
+  resetPasswordValidator,
+  verifyForgotPasswordTokenValidator
 } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handler'
 
@@ -34,7 +47,54 @@ userRouter.post('/register', registerValidator, wrapRequestHandler(registerContr
  * Header: { Authorization: Bearer {accessToken}
  * Body: { refreshToken: string }
  */
-// userRouter.post('/logout', accessTokenValidator, wrapRequestHandler(logoutController))
 userRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapRequestHandler(logoutController))
 
+/**
+ * Description: Verify email when register click link in email
+ * Method: POST
+ * Path: /users/verify-email
+ * Body: { verify_email_token: string }
+ */
+userRouter.post('/verify-email', emailVerifyTokenValidator, wrapRequestHandler(emailVerifyController))
+
+/**
+ * Description: resend verify email
+ * Method: POST
+ * Path: /users/resend-verify-email
+ * Header: { Authorization: Bearer {accessToken}
+ * Body: {}
+ */
+userRouter.post('/resend-verify-email', accessTokenValidator, wrapRequestHandler(resendemailVerifyController))
+
+/**
+ * Description: submit email to reset password, send email to user
+ * Method: POST
+ * Path: /users/forgot-password
+ * Body: { email: string }
+ */
+userRouter.post('/forgot-password', forgotPasswordValidator, wrapRequestHandler(forgotPasswordController))
+
+/**
+ * Description: Verify link in email to reset password
+ * Method: POST
+ * Path: /users/verify-forgot-password
+ * Body: { forgot-password-token: string }
+ */
+userRouter.post(
+  '/verify-forgot-password',
+  verifyForgotPasswordTokenValidator,
+  wrapRequestHandler(verifyForgotPasswordController)
+)
+
+/**
+ * Description: Reset password
+ * Method: POST
+ * Path: /users/reset-password
+ * Body: { forgot-password-token: string, password: string, confirm_password: string }
+ */
+userRouter.post(
+  '/reset-password',
+  resetPasswordValidator,
+  wrapRequestHandler(resetPasswordController)
+)
 export default userRouter
