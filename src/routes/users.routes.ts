@@ -1,25 +1,39 @@
-import { error } from 'console'
 import { Router } from 'express'
 import {
   emailVerifyController,
   forgotPasswordController,
   loginController,
   logoutController,
+  getMeController,
   registerController,
   resendemailVerifyController,
   resetPasswordController,
-  verifyForgotPasswordController
+  verifyForgotPasswordController,
+  updateMeController,
+  getProfileController,
+  followController,
+  unfollowController,
+  changePasswordController,
+  oauthController,
+  refreshTokenController
 } from '~/controllers/users.controllers'
+import { filterMiddleware } from '~/middlewares/common.middlewares'
 import {
   accessTokenValidator,
+  changePasswordValidator,
   emailVerifyTokenValidator,
+  followValidator,
   forgotPasswordValidator,
   loginValidator,
   refreshTokenValidator,
   registerValidator,
   resetPasswordValidator,
+  unfollowValidator,
+  updateMeValidator,
+  verifiedUserValidator,
   verifyForgotPasswordTokenValidator
 } from '~/middlewares/users.middlewares'
+import { UpdateMeProfileReqBody } from '~/models/requests/User.requests'
 import { wrapRequestHandler } from '~/utils/handler'
 
 const userRouter = Router()
@@ -31,6 +45,22 @@ const userRouter = Router()
  * Body: { email: string, password: string }
  */
 userRouter.post('/login', loginValidator, wrapRequestHandler(loginController))
+
+/**
+ * Description: refresh token
+ * Method: POST
+ * Path: /users/login
+ * Body: { refreshToken: string }
+ */
+userRouter.post('/refresh-token', refreshTokenValidator, wrapRequestHandler(refreshTokenController))
+
+/**
+ * Description: Login google
+ * Method: POST
+ * Path: /users/oauth/google
+ * Body: { email: string, password: string }
+ */
+userRouter.get('/oauth/google', wrapRequestHandler(oauthController))
 
 /**
  * Description: Register new user
@@ -61,7 +91,7 @@ userRouter.post('/verify-email', emailVerifyTokenValidator, wrapRequestHandler(e
  * Description: resend verify email
  * Method: POST
  * Path: /users/resend-verify-email
- * Header: { Authorization: Bearer {accessToken}
+ * Header: { Authorization: Bearer {accessToken}}
  * Body: {}
  */
 userRouter.post('/resend-verify-email', accessTokenValidator, wrapRequestHandler(resendemailVerifyController))
@@ -92,9 +122,89 @@ userRouter.post(
  * Path: /users/reset-password
  * Body: { forgot-password-token: string, password: string, confirm_password: string }
  */
-userRouter.post(
-  '/reset-password',
-  resetPasswordValidator,
-  wrapRequestHandler(resetPasswordController)
+userRouter.post('/reset-password', resetPasswordValidator, wrapRequestHandler(resetPasswordController))
+
+/**
+ * Description: get my profile
+ * Method: GET
+ * Path: /me
+ * Header: { Authorization: Bearer {accessToken}}
+ */
+userRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMeController))
+
+/**
+ * Description: update my profile
+ * Method: Patch
+ * Path: /me
+ * Header: { Authorization: Bearer {accessToken}}
+ * Body: UserSchema
+ */
+userRouter.patch(
+  '/me',
+  accessTokenValidator,
+  verifiedUserValidator,
+  updateMeValidator,
+  filterMiddleware<UpdateMeProfileReqBody>([
+    'name',
+    'bio',
+    'location',
+    'website',
+    'username',
+    'avatar',
+    'conver_photo'
+  ]),
+  wrapRequestHandler(updateMeController)
 )
+
+/**
+ * Description: get user profile
+ * Method: GET
+ * Path: /:username
+ */
+userRouter.get('/:username', wrapRequestHandler(getProfileController))
+
+/**
+ * Description: follow user
+ * Method: POST
+ * Path: /follow
+ * Header: { Authorization: Bearer {accessToken}}
+ * Body: { followed_user_id: string }
+ */
+userRouter.post(
+  '/follow',
+  accessTokenValidator,
+  verifiedUserValidator,
+  followValidator,
+  wrapRequestHandler(followController)
+)
+
+/**
+ * Description: unfollow user
+ * Method: Delete
+ * Path: /follow/:user_id
+ * Header: { Authorization: Bearer {accessToken}}
+ */
+userRouter.delete(
+  '/follow/:user_id',
+  accessTokenValidator,
+  verifiedUserValidator,
+  unfollowValidator,
+  wrapRequestHandler(unfollowController)
+)
+
+/**
+ * Description: Change password
+ * Method: PUT
+ * Path: /change-password
+ * Header: { Authorization: Bearer {accessToken}}
+ * Body: { o;password: string, new_password: string, confirm_new_password: string }
+ */
+userRouter.put(
+  '/change-password',
+  accessTokenValidator,
+  verifiedUserValidator,
+  changePasswordValidator,
+  wrapRequestHandler(changePasswordController)
+)
+
 export default userRouter
