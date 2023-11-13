@@ -7,7 +7,7 @@ import fs from 'fs'
 import { isProduction } from '~/constants/config'
 import { config } from 'dotenv'
 import { MediaType } from '~/constants/enums'
-import { Media } from '~/models/Orther'
+import { Media } from '~/models/Other'
 config()
 
 // const generatePromist = (delay: number) => {

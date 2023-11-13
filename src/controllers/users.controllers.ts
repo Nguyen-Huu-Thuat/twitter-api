@@ -215,7 +215,7 @@ export const refreshTokenController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { userId: user_id, verify } = req.decode_refresh_token as TokenPayload
+  const { userId: user_id, verify, exp } = req.decode_refresh_token as TokenPayload
   console.log(req.decode_refresh_token)
   const { refresh_token } = req.body
   if (!user_id) {
@@ -223,7 +223,7 @@ export const refreshTokenController = async (
       message: USER_MESSAGE.USER_NOT_FOUND
     })
   }
-  const result = await usersService.refreshToken({ user_id, verify, refresh_token })
+  const result = await usersService.refreshToken({ user_id, verify, refresh_token, exp })
   return res.json({
     message: USER_MESSAGE.REFRESH_TOKEN_SUCCESSFULLY,
     result

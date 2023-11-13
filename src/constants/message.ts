@@ -67,3 +67,54 @@ export const USER_MESSAGE = {
   UPLOAD_SUCCESSFULLY: 'Upload successfully',
   REFRESH_TOKEN_SUCCESSFULLY: 'Refresh token successfully'
 }
+
+export const TWEET_MESSAGE = {
+  TYPE_IS_REQUIRED: 'Type is required',
+  TYPE_IS_INVALID: 'Type is invalid',
+  TYPE_MUST_BE_STRING: 'Type must be string',
+  TYPE_MUST_BE_ONE_OF_THE_FOLLOWING_VALUES: 'Type must be one of the following values',
+  AUDIENCE_IS_REQUIRED: 'Audience is required',
+  AUDIENCE_IS_INVALID: 'Audience is invalid',
+  AUDIENCE_MUST_BE_STRING: 'Audience must be string',
+  AUDIENCE_MUST_BE_ONE_OF_THE_FOLLOWING_VALUES: 'Audience must be one of the following values',
+  CONTENT_IS_REQUIRED: 'Content is required',
+  CONTENT_MUST_BE_STRING: 'Content must be string',
+  CONTENT_LENGTH_MUST_BE_MORE_THAN_1_AND_LESS_THAN_280: 'Content length must be more than 1 and less than 280',
+  PARENT_ID_IS_INVALID: 'Parent id is invalid',
+  PARENT_ID_MUST_BE_STRING: 'Parent id must be string',
+  HASHTAGS_MUST_BE_ARRAY: 'Hashtags must be array',
+  HASHTAGS_MUST_BE_STRING: 'Hashtags must be string',
+  HASHTAGS_LENGTH_MUST_BE_MORE_THAN_1_AND_LESS_THAN_50: 'Hashtags length must be more than 1 and less than 50',
+  MENTIONS_MUST_BE_ARRAY: 'Mentions must be array',
+  MENTIONS_MUST_BE_STRING: 'Mentions must be string',
+  MENTIONS_LENGTH_MUST_BE_MORE_THAN_1_AND_LESS_THAN_50: 'Mentions length must be more than 1 and less than 50',
+  MEDIAS_MUST_BE_ARRAY: 'Medias must be array',
+  MEDIAS_MUST_BE_STRING: 'Medias must be string',
+  MEDIAS_LENGTH_MUST_BE_MORE_THAN_1_AND_LESS_THAN_4: 'Medias length must be more than 1 and less than 4',
+  CREATE_TWEET_SUCCESSFULLY: 'Create tweet successfully',
+  GET_TWEETS_SUCCESSFULLY: 'Get tweets successfully',
+  GET_TWEET_SUCCESSFULLY: 'Get tweet successfully',
+  TWEET_NOT_FOUND: 'Tweet not found',
+  DELETE_TWEET_SUCCESSFULLY: 'Delete tweet successfully',
+  GET_COMMENTS_SUCCESSFULLY: 'Get comments successfully',
+  GET_RETWEETS_SUCCESSFULLY: 'Get retweets successfully',
+  PARENT_ID_MUST_BE_A_VALID_TWEET_ID: 'Parent id must be a valid tweet id',
+  PARENT_ID_MUST_BE_NULL: 'Parent id must be null',
+  CONTENT_MUST_BE_A_NON_EMPTY_STRING: 'Content must be a non-empty string',
+  CONTENT_MUST_BE_EMPTY_STRING: 'Content must be empty string',
+  HASHTAGS_MUST_BE_AN_ARRAY_STRING: 'Hashtags must be an array string',
+  MENTIONS_MUST_BE_AN_ARRAY_OF_USER_ID: 'Mentions must be an array of user id',
+  MEDIAS_MUST_BE_AN_ARRAY_OF_MEDIA_OBJECT: 'Medias must be an array of media object'
+} as const
+
+export const BOOKMARK_MESSAGE = {
+  CREATE_BOOKMARK_SUCCESSFULLY: 'Create bookmark successfully',
+  DELETE_BOOKMARK_SUCCESSFULLY: 'Delete bookmark successfully',
+  GET_BOOKMARKS_SUCCESSFULLY: 'Get bookmarks successfully',
+  DELETE_BOOKMARK_BY_BOOKMARK_ID_SUCCESSFULLY: 'Delete bookmark by bookmark id successfully'
+} as const
+
+export const LIKE_MESSAGE = {
+  LIKE_TWEET_SUCCESSFULLY: 'Like tweet successfully',
+  UNLIKE_TWEET_SUCCESSFULLY: 'Unlike tweet successfully'
+} as const
