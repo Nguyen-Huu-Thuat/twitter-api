@@ -99,7 +99,8 @@ class UsersService {
       verify: UserVerifyStatus.Unverified
     })
     // tạo username random
-    const username = `username_${user_id.toString().substring(0, 5)}`
+    const username = `username_${user_id.toString().substring(0, 8)}`
+    console.log(username)
     await databaseService.users.insertOne(
       new User({
         ...payload,
