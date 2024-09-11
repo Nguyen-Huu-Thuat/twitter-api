@@ -4,18 +4,25 @@ import databaseService from './services/database.services'
 import { defaultErrorHandler } from './middlewares/error.middlewares'
 import mediaRouter from './routes/medias.routes'
 import { initFolder } from './utils/file'
-import { config } from 'dotenv'
-import argv from 'minimist'
 import { UPLOAD_IMAGE_DIR, UPLOAD_VIDEO_DIR } from './constants/dir'
 import staticRouter from './routes/static.routes'
-import { MongoClient } from 'mongodb'
 import tweetsRouter from './routes/tweets.routes'
 import bookmarksRouter from './routes/bookmarks.routes'
 import likesRouter from './routes/likes.routes'
-config()
+import searchRoutes from './routes/search.routes'
+import { envConfig, isProduction } from './constants/config'
+import cors, { CorsOptions } from 'cors'
+import helmet from 'helmet'
+// import './utils/fake'
 
 const app = express()
-const port = process.env.PORT || 4000
+app.use(helmet())
+
+const corsOptions: CorsOptions = {
+  origin: isProduction ? envConfig.clientUrl : '*'
+}
+app.use(cors(corsOptions))
+const port = envConfig.port
 
 initFolder()
 
@@ -37,6 +44,7 @@ app.use('/bookmarks', bookmarksRouter)
 app.use('/likes', likesRouter)
 app.use('/static', express.static(UPLOAD_IMAGE_DIR))
 app.use('/static/video', express.static(UPLOAD_VIDEO_DIR))
+app.use('/search', searchRoutes)
 
 app.use(defaultErrorHandler)
 

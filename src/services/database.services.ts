@@ -8,8 +8,8 @@ import Hashtag from '~/models/schemas/Hashtag.schema'
 import Bookmark from '~/models/schemas/Bookmark.schema'
 import Like from '~/models/schemas/Like.schema'
 config()
-// const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.4fmzets.mongodb.net/?retryWrites=true&w=majority`
-const uri = `mongodb://127.0.0.1:27017`
+const uri = `mongodb+srv://nguyenhuuthuat:Thuat123@cluster0.cs9d8wh.mongodb.net/twitter-dev?retryWrites=true&w=majority`
+// const uri = `mongodb://127.0.0.1:27017`
 
 class DatabaseService {
   private client: MongoClient

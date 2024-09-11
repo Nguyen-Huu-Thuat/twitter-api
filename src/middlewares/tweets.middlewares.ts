@@ -260,7 +260,6 @@ export const tweetIdValidator = validate(
 // Nếu không có try catch thì dùng wrapRequestHandler
 export const audienceValidator = wrapRequestHandler(async (req: Request, res: Response, next: NextFunction) => {
   const tweet = req.tweet as Tweet
-  console.log(tweet)
   if (tweet.audience === TweetAudience.TwitterCircle) {
     //Kiểm tra người xem tweet đã đăng nhập hay chưa
     if (!req.decodedAuthorization) {
@@ -292,3 +291,45 @@ export const audienceValidator = wrapRequestHandler(async (req: Request, res: Re
   }
   next()
 })
+
+export const getTweetChildrenValidator = validate(
+  checkSchema(
+    {
+      tweet_type: {
+        isIn: {
+          options: [tweetsTypes],
+          errorMessage: TWEET_MESSAGE.TYPE_IS_INVALID
+        }
+      }
+    },
+    ['query']
+  )
+)
+
+export const paginationValidator = validate(
+  checkSchema(
+    {
+      page: {
+        isNumeric: true,
+        custom: {
+          options: (value, { req }) => {
+            const number = Number(value)
+            if (number < 1) throw new Error('Page must be greater than 1')
+            return true
+          }
+        }
+      },
+      limit: {
+        isNumeric: true,
+        custom: {
+          options: (value, { req }) => {
+            const number = Number(value)
+            if (number > 100 || number < 1) throw new Error('Limit must be greater than 0 and less than 100')
+            return true
+          }
+        }
+      }
+    },
+    ['query']
+  )
+)
